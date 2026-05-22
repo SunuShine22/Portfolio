@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Антон Ткач — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   VARIABLES & RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #0b0f19;
+  --bg2:      #111625;
+  --surface:  rgba(255, 255, 255, 0.025);
+  --border:   rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(96, 165, 250, 0.25);
+  --text:     #f1f5f9;
+  --muted:    #94a3b8;
+  --blue:     #2563eb;
+  --blue-l:   #60a5fa;
+  --blue-g:   rgba(37, 99, 235, 0.15);
+  --gold:     --gold-l;
+  --gold-l:   #fbbf24;
+  --nav-h:    72px;
+  --fd: 'Syne', sans-serif;
+  --fb: 'DM Sans', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--fb);
+  font-weight: 300;
+  overflow-x: hidden;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 35%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 80% 65%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  animation: bgPulse 12s ease-in-out infinite alternate;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.012;
+  pointer-events: none;
+}
+@keyframes bgPulse {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(2%, 1%, 0) scale(1.02); }
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 52px;
+  transition: background .35s;
+}
+nav.scrolled {
+  background: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--fd); font-size: 1.15rem; font-weight: 700;
+  letter-spacing: .08em;
+  background: linear-gradient(130deg, #fff 30%, var(--blue-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; transition: color .2s;
+  font-weight: 500;
+}
+.nav-links a:hover { color: #fff; }
+.nav-cta {
+  padding: 10px 24px; background: var(--blue); color: #fff;
+  border: none; border-radius: 6px; font-family: var(--fb);
+  font-size: .8rem; font-weight: 500; letter-spacing: .04em;
+  text-decoration: none;
+  transition: background .2s, box-shadow .2s;
+}
+.nav-cta:hover { background: var(--blue-l); box-shadow: 0 0 24px var(--blue-g); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; overflow: hidden;
+}
+#spline-wrap {
+  position: absolute; inset: 0; z-index: 1;
+}
+#spline-wrap iframe {
+  width: 100%; height: 100%; border: none; display: block;
+  opacity: 0; transition: opacity .8s;
+}
+.spline-fade {
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(90deg,
+    rgba(11, 15, 25, 0.94) 0%,
+    rgba(11, 15, 25, 0.65) 45%,
+    rgba(11, 15, 25, 0.20) 70%,
+    transparent 100%);
+}
+.spline-wm {
+  position: absolute; bottom: 0; right: 0;
+  width: 190px; height: 56px;
+  background: #05070e; z-index: 10; pointer-events: none;
+}
+.hero-content {
+  position: relative; z-index: 3;
+  padding: calc(var(--nav-h) + 36px) 52px 0;
+  max-width: 650px;
+  pointer-events: none;
+}
+.hero-content > * { pointer-events: auto; }
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold-l); margin-bottom: 22px;
+  opacity: 0; animation: fadeUp .6s .2s forwards;
+}
+.hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--gold-l); display:block; }
+h1.hero-name {
+  font-family: var(--fd); font-size: clamp(3rem, 5.5vw, 5.8rem);
+  font-weight: 800; line-height: .93; letter-spacing: -.03em;
+  background: linear-gradient(155deg, #fff 0%, #c5d0ee 55%, var(--blue-l) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 22px;
+  opacity: 0; animation: fadeUp .7s .4s forwards;
+}
+.hero-tagline {
+  font-size: 1.12rem; color: var(--muted); line-height: 1.55; margin-bottom: 14px;
+  opacity: 0; animation: fadeUp .7s .6s forwards;
+}
+.hero-tagline strong { color: var(--blue-l); font-weight: 500; }
+.hero-sub {
+  font-size: .92rem; color: rgba(148, 163, 184, 0.8); line-height: 1.78;
+  max-width: 550px; margin-bottom: 38px;
+  opacity: 0; animation: fadeUp .7s .8s forwards;
+}
+.hero-btns {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s 1s forwards;
+}
+
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 52px; z-index: 3;
+  display: flex; align-items: center; gap: 10px;
+  font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0; animation: fadeUp .8s 1.4s forwards;
+}
+.scroll-line {
+  width: 36px; height: 1px; background: var(--muted);
+  overflow: hidden; position: relative;
+}
+.scroll-line::after {
+  content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%;
+  background: var(--blue-l); animation: scan 2.2s 2s infinite;
+}
+
+/* ============================================================
+   SECTIONS & REVEAL
+   ============================================================ */
+section { position: relative; z-index: 2; padding: 120px 8vw; }
+.sec-label {
+  font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold-l); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-label::before { content:''; width:22px; height:1px; background:var(--gold-l); display:block; }
+h2.sec-title {
+  font-family: var(--fd); font-size: clamp(2rem,3.5vw,3.5rem);
+  font-weight: 700; line-height: 1.06; letter-spacing: -.02em;
+  background: linear-gradient(115deg, #fff 40%, var(--blue-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 56px;
+}
+.reveal {
+  opacity: 0; transform: translate3d(0, 30px, 0);
+  transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
+  will-change: transform, opacity;
+}
+.reveal.vis { opacity: 1; transform: translate3d(0,0,0); }
+
+/* ============================================================
+   ABOUT & METADATA
+   ============================================================ */
+#about { background: var(--bg); }
+.about-grid { display: grid; grid-template-columns: 360px 1fr; gap: 64px; align-items: start; }
+.about-photo-col { display: flex; flex-direction: column; gap: 20px; }
+.photo-frame {
+  position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; max-width: 360px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.photo-frame img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(12%) contrast(1.02); transition: filter .5s; display: block;
+}
+.photo-frame:hover img { filter: grayscale(0%) contrast(1.05); }
+.photo-frame::after {
+  content: ''; position: absolute; inset: 0;
+  border: 1px solid rgba(96,165,250,0.15); border-radius: 12px;
+  pointer-events: none; z-index: 2;
+}
+
+/* Modern Metatags Under Photo */
+.photo-meta-container {
+  display: flex; flex-direction: column; gap: 10px; max-width: 360px;
+}
+.meta-tag {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: rgba(255,255,255,0.015);
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: .82rem; color: var(--text);
+  transition: all 0.3s cubic-bezier(.16,1,.3,1);
+}
+.meta-tag:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border-hover);
+  transform: translate3d(4px, 0, 0);
+}
+.meta-icon {
+  width: 18px; height: 18px; color: var(--blue-l); stroke-width: 2; flex-shrink: 0;
+}
+.meta-tag.active-work .meta-icon {
+  color: #10b981;
+}
+
+/* About text elements */
+.about-text { padding-top: 4px; }
+.about-text p { font-size: .98rem; line-height: 1.85; color: var(--muted); margin-bottom: 22px; }
+.about-text p strong { color: var(--text); font-weight: 500; }
+
+/* Dynamic premium widgets */
+.exp-stats-container {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0;
+}
+.exp-stat-card {
+  position: relative; padding: 24px 20px; background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%);
+  border: 1px solid var(--border); border-radius: 12px; text-align: center;
+  overflow: hidden; transition: all 0.3s cubic-bezier(.16,1,.3,1);
+}
+.exp-stat-card:hover {
+  border-color: var(--border-hover);
+  transform: translate3d(0, -4px, 0);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+}
+.exp-stat-card .card-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 120%, rgba(96,165,250,0.08), transparent 70%);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.exp-stat-card:hover .card-glow { opacity: 1; }
+.exp-stat-card .num {
+  font-family: var(--fd); font-size: 2.2rem; font-weight: 800;
+  line-height: 1; color: var(--blue-l); display: block; margin-bottom: 8px;
+}
+.exp-stat-card .lbl { font-size: .75rem; font-weight: 600; color: var(--text); letter-spacing: .04em; display: block; margin-bottom: 2px; }
+.exp-stat-card .sub { font-size: .68rem; color: var(--muted); display: block; }
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+#skills { background: var(--bg2); }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; }
+.skill-card {
+  padding: 32px 24px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 12px;
+  transition: all .3s cubic-bezier(.16,1,.3,1);
+  position: relative; overflow: hidden;
+}
+.skill-card::after {
+  content: ''; position: absolute; bottom:0; left:0; right:0; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--gold-l));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.skill-card:hover { 
+  border-color: var(--border-hover); 
+  transform: translate3d(0, -6px, 0); 
+  box-shadow: 0 20px 48px rgba(0,0,0,0.35); 
+}
+.skill-card:hover::after { transform: scaleX(1); }
+.sk-icon-box {
+  width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; background: rgba(96,165,250,0.06); border: 1px solid rgba(255,255,255,0.03);
+  margin-bottom: 20px; color: var(--blue-l); transition: all 0.3s ease;
+}
+.skill-card:hover .sk-icon-box {
+  background: rgba(96,165,250,0.15); color: #fff;
+  transform: scale(1.08) rotate(-4deg);
+  box-shadow: 0 0 16px rgba(96,165,250,0.25);
+}
+.skill-card h3 { font-family: var(--fd); font-size: .95rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+.skill-card p { font-size: .8rem; color: var(--muted); line-height: 1.63; }
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+#projects { background: var(--bg); }
+.projects-list { display: flex; flex-direction: column; gap: 32px; }
+.project-card {
+  display: grid; grid-template-columns: 340px 1fr;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  transition: border-color .3s, box-shadow .3s;
+}
+.project-card:hover { border-color: var(--border-hover); box-shadow: 0 24px 70px rgba(0,0,0,0.4); }
+.pv { position: relative; min-height: 280px; overflow: hidden; }
+.pv-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.pv-1 { background: linear-gradient(135deg, #08162a 0%, #0d2248 100%); }
+.pv-2 { background: linear-gradient(135deg, #110a26 0%, #1c0f42 100%); }
+.pv-3 { background: linear-gradient(135deg, #081c10 0%, #0d3820 100%); }
+.pv-num {
+  position: absolute; top: 18px; left: 18px;
+  font-family: var(--fd); font-size: 3.5rem; font-weight: 800;
+  color: rgba(255,255,255,0.035); line-height: 1;
+}
+.pv svg { width: 75%; height: 75%; opacity: .9; }
+.pi { padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+.p-tag {
+  display: inline-block; padding: 4px 11px;
+  background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 20px; font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--blue-l); margin-bottom: 14px; width: fit-content;
+}
+.pi h3 {
+  font-family: var(--fd); font-size: 1.35rem; font-weight: 700;
+  color: #fff; line-height: 1.22; margin-bottom: 12px;
+}
+.pi p { font-size: .88rem; color: var(--muted); line-height: 1.78; margin-bottom: 22px; }
+.p-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
+.chip {
+  padding: 4px 10px; background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border); border-radius: 3px;
+  font-size: .7rem; color: var(--muted);
+}
+.btn-sm {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 12px 24px; border: 1px solid var(--blue);
+  color: var(--blue-l); border-radius: 6px;
+  font-size: .8rem; font-weight: 500; letter-spacing: .04em;
+  text-decoration: none; background: transparent;
+  transition: background .2s, box-shadow .2s; width: fit-content;
+}
+.btn-sm:hover { background: var(--blue-g); box-shadow: 0 0 18px var(--blue-g); }
+.btn-sm svg { width: 13px; height: 13px; }
+
+/* ============================================================
+   MODALS (Dashboard with custom terminal style controls)
+   ============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(11,15,25,0.97); backdrop-filter: blur(20px);
+  opacity: 0; visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+  display: flex; flex-direction: column;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal-header {
+  flex-shrink: 0; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; border-bottom: 1px solid var(--border);
+  background: rgba(17,22,37,0.95);
+}
+.modal-header h4 { font-family: var(--fd); font-size: 1rem; font-weight: 600; color: #fff; }
+.modal-close {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.08); color: #fff; border-color: var(--gold-l); transform: rotate(90deg); }
+.modal-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+.modal-body iframe { width: 100%; flex: 1; border: none; display: block; min-height: 0; }
+
+/* AI Terminal Simulator Dashboard */
+.ai-dashboard-grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  height: 100%;
+  padding: 24px 32px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(.16,1,.3,1);
+}
+.ai-dashboard-grid.video-collapsed {
+  grid-template-columns: 0px 1fr;
+  gap: 0px;
+}
+.video-column {
+  display: flex; flex-direction: column; gap: 16px; overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.ai-dashboard-grid.video-collapsed .video-column {
+  opacity: 0; pointer-events: none; transform: translate3d(-20px, 0, 0);
+}
+.video-row {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(16,185,129,0.2); background: #000;
+  position: relative; height: 260px; flex-shrink: 0;
+}
+.video-row video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Custom HUD Media Bar Control Panel */
+.custom-player-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(4, 8, 14, 0.85);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 8px 16px;
+  display: flex; align-items: center; gap: 14px;
+  z-index: 10;
+}
+.player-btn {
+  background: transparent; border: none; color: #10b981;
+  font-size: 1rem; cursor: pointer; display: flex; align-items: center;
+}
+.progress-bar-container {
+  flex: 1; height: 6px; background: rgba(255,255,255,0.1);
+  border-radius: 3px; cursor: pointer; position: relative;
+}
+.progress-bar-fill {
+  height: 100%; width: 0%; background: #10b981; border-radius: 3px;
+  position: absolute; left: 0; top: 0;
+}
+.volume-container {
+  display: flex; align-items: center; gap: 8px;
+}
+.vol-icon {
+  width: 14px; height: 14px; color: #10b981;
+}
+.volume-slider {
+  width: 60px; height: 4px; -webkit-appearance: none; background: rgba(255,255,255,0.2);
+  border-radius: 2px; outline: none; cursor: pointer;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%;
+  background: #10b981; cursor: pointer;
+}
+.speed-selector select {
+  background: #060a10; border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981; font-family: monospace; font-size: 0.7rem;
+  border-radius: 4px; padding: 2px 4px; outline: none; cursor: pointer;
+}
+
+/* Video Guidelines Card inside Left Column */
+.video-guidelines {
+  background: rgba(255,255,255,0.015); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.video-guidelines h5 { color: #fff; font-size: .85rem; font-weight: 600; letter-spacing: .02em; }
+.video-guidelines ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.video-guidelines ul li { font-size: .76rem; color: var(--muted); line-height: 1.4; display: flex; gap: 8px; }
+.video-guidelines ul li::before { content: '→'; color: #10b981; font-weight: bold; }
+
+/* Right Column Terminal Block */
+.term-block { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+.term-head {
+  padding: 12px 18px; background: #060a10;
+  border: 1px solid rgba(16,185,129,0.2); border-radius: 8px 8px 0 0;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.t-ttl { display: flex; align-items: center; gap: 8px; font-family: monospace; font-size: .8rem; color: #10b981; }
+.t-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; animation: tpulse 2s infinite; }
+@keyframes tpulse { 0%{box-shadow:0 0 0 0 rgba(16,185,129,.6)} 70%{box-shadow:0 0 0 6px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)} }
+.term-console {
+  flex: 1; overflow-y: auto; padding: 18px;
+  background: #04080e;
+  border: 1px solid rgba(16,185,129,0.15); border-top: none;
+  font-family: 'Courier New', monospace; font-size: .83rem;
+  color: #a7f3d0; min-height: 0;
+}
+.term-console::-webkit-scrollbar { width: 4px; }
+.term-console::-webkit-scrollbar-thumb { background: rgba(16,185,129,0.3); border-radius: 2px; }
+.cl { margin-bottom: 9px; line-height: 1.5; }
+.cl.sys  { color: #4b5563; }
+.cl.usr  { color: var(--blue-l); }
+.cl.bot  { color: #10b981; }
+.cl.warn { color: var(--gold-l); }
+.term-btns {
+  padding: 16px; background: #040710;
+  border: 1px solid rgba(16,185,129,0.12); border-top: none;
+  border-radius: 0 0 8px 8px;
+  display: flex; gap: 9px; flex-wrap: wrap; flex-shrink: 0;
+  align-items: center;
+}
+.t-btn {
+  padding: 8px 14px; background: rgba(16,185,129,0.04);
+  border: 1px solid rgba(16,185,129,0.18); color: #6ee7b7;
+  font-size: .73rem; font-family: monospace; border-radius: 5px;
+  cursor: pointer; transition: all .2s;
+}
+.t-btn:hover { background: rgba(16,185,129,0.12); border-color: #10b981; color: #10b981; }
+.t-btn.toggle-video-btn {
+  border-color: rgba(96,165,250,0.3); color: var(--blue-l); background: rgba(59,130,246,0.03);
+  margin-left: auto;
+}
+.t-btn.toggle-video-btn:hover { border-color: var(--blue-l); color: #fff; background: rgba(59,130,246,0.08); }
+.wave-anim { display: flex; gap: 3px; align-items: center; height: 22px; margin-left: 12px; }
+.wb { width: 3px; border-radius: 3px; background: #10b981; animation: wv 1.2s ease-in-out infinite alternate; }
+.wb:nth-child(2) { animation-delay: .15s; }
+.wb:nth-child(3) { animation-delay: .3s; }
+.wb:nth-child(4) { animation-delay: .45s; }
+.wb:nth-child(5) { animation-delay: .6s; }
+@keyframes wv { from { height: 4px; } to { height: 18px; } }
+
+/* ============================================================
+   CONTACT & FOOTER
+   ============================================================ */
+#contact { background: var(--bg); text-align: center; }
+.contact-inner { max-width: 600px; margin: 0 auto; }
+.contact-sub { font-size: .98rem; color: var(--muted); line-height: 1.7; margin-bottom: 42px; }
+.contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 13px; margin-bottom: 52px; }
+.clink {
+  display: flex; align-items: center; gap: 9px;
+  padding: 14px 24px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--muted); font-size: .85rem; text-decoration: none;
+  transition: border-color .2s, color .2s, transform .18s; cursor: pointer;
+}
+.clink:hover { border-color: var(--blue-l); color: var(--text); transform: translate3d(0, -3px, 0); }
+.clink svg { width: 17px; height: 17px; color: var(--blue-l); flex-shrink: 0; }
+
+footer {
+  padding: 26px 8vw; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .72rem; color: var(--muted); position: relative; z-index: 2;
+}
+footer a { color: var(--muted); text-decoration: none; transition: color .2s; }
+footer a:hover { color: var(--blue-l); }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity:0; transform: translate3d(0, 22px, 0); }
+  to   { opacity:1; transform: translate3d(0, 0, 0); }
+}
+@keyframes scan {
+  from { left:-100%; } to { left:100%; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px) {
+  .about-grid { grid-template-columns: 1fr; gap: 52px; }
+  .project-card { grid-template-columns: 1fr; }
+  .pv { min-height: 200px; }
+}
+@media (max-width:768px) {
+  nav { padding: 0 22px; }
+  .nav-links { display: none; }
+  section { padding: 72px 22px; }
+  .hero-content { padding: calc(var(--nav-h)+20px) 22px 0; max-width: 100%; }
+  #spline-wrap { opacity: .25; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+  .pi { padding: 28px 22px; }
+  .modal-header { padding: 0 18px; }
+  .ai-dashboard-grid { grid-template-columns: 1fr; gap: 16px; padding: 14px 16px; }
+  .ai-dashboard-grid.video-collapsed { grid-template-columns: 1fr; }
+  .video-row { height: 160px; }
+}
+
+/* ============================================================
+   FIXED BUTTON STYLES (EXACTLY AS IN REFERENCE)
+   ============================================================ */
+.btn-primary {
+  padding: 13px 30px; background: var(--blue); color: #fff;
+  border: none; border-radius: 5px; font-family: var(--fb);
+  font-size: .83rem; font-weight: 500; letter-spacing: .04em;
+  cursor: none; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background .2s, box-shadow .2s, transform .18s;
+}
+.btn-primary:hover {
+  background: var(--blue-l);
+  box-shadow: 0 0 24px var(--blue-g);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  padding: 13px 30px; background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 5px; font-family: var(--fb);
+  font-size: .83rem; cursor: none; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color .2s, color .2s, transform .18s;
+}
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold-l);
+  transform: translateY(-2px);
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-logo" href="#">AT</a>
+  <ul class="nav-links">
+    <li><a href="#about">О себе</a></li>
+    <li><a href="#skills">Навыки</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Связаться</a>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div id="spline-wrap">
+    <iframe
+      src="https://my.spline.design/nexbotrobotcharacterconcept-GtaJJescU3SXmeP4IY6XBQok/"
+      title="Nexbot Robot"
+      allow="fullscreen"
+      loading="lazy"
+      onload="this.style.opacity=1">
+    </iframe>
+    <div class="spline-fade"></div>
+    <div class="spline-wm"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Product Designer · Москва</div>
+    <h1 class="hero-name">Антон<br>Ткач</h1>
+    <p class="hero-tagline"><strong>Junior Product Designer</strong> — создаю продукты от генерации деловой идеи до получения готового прототипа</p>
+    <p class="hero-sub">Выпускник РАНХиГС. Разработал прототип голосового AI-ассистента для Simple Wine, участвовал в проектной деятельности, создавал интерактивные HTML-проекты с нуля. Ищу возможность развивать свои навыки и вывести их на следующий уровень.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Смотреть проекты
+      </a>
+      <a href="CV.pdf" download="CV_Anton_Tkach.pdf" class="btn-outline" id="dlCV" download="CV_Anton_Tkach.pdf">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Скачать CV
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-hint"><div class="scroll-line"></div>Прокрутите вниз</div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="sec-label reveal">Обо мне</div>
+  <h2 class="sec-title reveal">Человек на пересечении<br>дизайна и технологий</h2>
+
+  <div class="about-grid">
+    <div class="about-photo-col reveal">
+      <div class="photo-frame">
+        <img
+          src="hero.png"
+          alt="Антон Ткач"
+          onerror="this.style.cssText='display:block;width:100%;height:100%;background:linear-gradient(160deg,#0d1830,#162044);min-height:440px'"/>
+      </div>
+      <!-- Relocated High-Fidelity Metadata tags with SVG Icons under photo -->
+      <div class="photo-meta-container">
+        <div class="meta-tag">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke-width="2"/></svg>
+          <span>Москва</span>
+        </div>
+        <div class="meta-tag">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/><line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/><line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/></svg>
+          <span>22 года</span>
+        </div>
+        <div class="meta-tag">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="2" y1="12" x2="22" y2="12" stroke-width="2"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke-width="2"/></svg>
+          <span>Английский B2 (BEC)</span>
+        </div>
+        <div class="meta-tag active-work">
+          <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-width="2"/><polyline points="22 4 12 14.01 9 11.01" stroke-width="2"/></svg>
+          <span>Открыт к предложениям</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <p>
+        Закончил <strong>РАНХиГС</strong> по направлению «Менеджмент — управление малым и средним бизнесом». Во время учёбы активно участвовал в проектной деятельности: решал прикладные задачи по благоустройству городских территорий и проектированию комплексной инфраструктуры для муниципальных администраций и коммерческих партнёров. Этот опыт научил меня системно декомпозировать задачи любого масштаба.
+      </p>
+      <p>
+        Свой первый серьёзный опыт в B2C-продажах получил в компании <strong>BECKER</strong>, занимающейся производством кухонных гарнитуров премиум-сегмента. Вёл клиентов на протяжении всего жизненного цикла сделки: от выявления глубинных потребностей на этапе первого контакта до трёхмерного моделирования индивидуального дизайн-проекта в специализированной САПР-программе, отработки сложных возражений и подписания контракта. Заключил более 90 договоров со средним чеком около 600 000 ₽. Практика прямых продаж научила меня гибко адаптироваться к индивидуальным запросам пользователей, детально понимать боли клиентов и оперировать измеримой ценностью при разработке решений.
+      </p>
+
+      <!-- Glassmorphic Becker metrics container -->
+      <div class="exp-stats-container reveal">
+        <div class="exp-stat-card">
+          <div class="card-glow"></div>
+          <span class="num">90+</span>
+          <span class="lbl">Договоров</span>
+          <span class="sub">заключено в BECKER</span>
+        </div>
+        <div class="exp-stat-card">
+          <div class="card-glow"></div>
+          <span class="num">120+</span>
+          <span class="lbl">Проектов</span>
+          <span class="sub">разработано</span>
+        </div>
+        <div class="exp-stat-card">
+          <div class="card-glow"></div>
+          <span class="num">600K</span>
+          <span class="lbl">Средний чек</span>
+          <span class="sub">рублей за проект</span>
+        </div>
+      </div>
+
+      <p>
+        В дипломной работе разработал <strong>голосового AI-ассистента</strong> для компании Simple Wine — от архитектуры до рабочего прототипа. Стек: Python, Vosk (распознавание речи), Yandex GPT (генерация ответов), Yandex TTS (синтез голоса). Ассистент определяет клиента, проверяет уровень лояльности и подбирает вино под запрос в реальном времени.
+      </p>
+      <p>
+        Также активно занимаюсь разработкой <strong>интерактивных HTML-продуктов с нуля</strong>. Некоторые из моих последних проектов: браузерный детектив с нелинейным сюжетом, прототип мобильного интерфейса с полноценной анимацией и интерактивные презентации. Всё это custom, без использования заготовленных фреймворков — я считаю это лучшим способом проверять продуктовые идеи и показывать решения вживую, а не в виде статичных макетов.
+      </p>
+      <p>
+        Убежден: <strong>будущее за теми, кто осваивает новые инструменты раньше</strong>, чем они становятся индустриальным стандартом. В каждом проекте я намеренно пробую новый технологический стек или формат — это не просто хобби, это осознанная рабочая практика. Мне комфортно работать в динамичной среде, требующей гибкости, непрерывного роста и постоянного саморазвития.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SKILLS ===================== -->
+<section id="skills">
+  <div class="sec-label reveal">Компетенции</div>
+  <h2 class="sec-title reveal">Ключевые навыки</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 9H3M21 15H3M12 3v18"/></svg>
+      </div>
+      <h3>UX & Проектирование</h3>
+      <p>Пользовательский опыт, прототипирование, CJM, логика интерфейсов — от задачи до кликабельного решения.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <h3>Данные и аналитика</h3>
+      <p>Excel, финансовый анализ, работа с метриками. Принятие решений на основе данных, а не ощущений.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>AI & Python</h3>
+      <p>Vosk ASR, Yandex GPT, TTS, PyAudio. Разработка AI-решений под конкретные бизнес-задачи.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+      </div>
+      <h3>Продуктовое мышление</h3>
+      <p>Полный цикл продукта: бриф, гипотезы, roadmap, валидация. Понимание, зачем продукт существует.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <h3>Frontend-прототипы</h3>
+      <p>HTML, CSS, JavaScript без использования заготовленных внешних фреймворков.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>CRM & Процессы</h3>
+      <p>Bitrix24, клиентские базы, документооборот. Понимание операционных процессов изнутри.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="22" y2="7"/><line x1="2" y1="17" x2="22" y2="17"/></svg>
+      </div>
+      <h3>Системное мышление</h3>
+      <p>Unreal Engine, Unity, Blender — проектирование механик как способ думать о поведении пользователя.</p>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>B2C & Коммуникация</h3>
+      <p>Выявление потребностей, работа с возражениями, индивидуальные решения. 90+ закрытых сделок.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="projects">
+  <div class="sec-label reveal">Избранные работы</div>
+  <h2 class="sec-title reveal">Проекты</h2>
+  <div class="projects-list">
+
+    <!-- 01 -->
+    <div class="project-card reveal">
+      <div class="pv pv-1">
+        <div class="pv-num">01</div>
+        <div class="pv-inner">
+          <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs>
+            <rect x="20" y="195" width="32" height="55" rx="3" fill="rgba(59,130,246,0.28)" stroke="rgba(96,165,250,0.4)" stroke-width="1"/>
+            <rect x="66" y="158" width="32" height="92" rx="3" fill="rgba(59,130,246,0.44)" stroke="rgba(96,165,250,0.5)" stroke-width="1"/>
+            <rect x="112" y="122" width="32" height="128" rx="3" fill="url(#g1)" stroke="rgba(96,165,250,0.7)" stroke-width="1"/>
+            <rect x="158" y="92" width="32" height="158" rx="3" fill="url(#g1)" stroke="rgba(96,165,250,0.7)" stroke-width="1"/>
+            <rect x="204" y="62" width="32" height="188" rx="3" fill="rgba(196,154,60,0.55)" stroke="rgba(232,201,122,0.7)" stroke-width="1"/>
+            <polyline points="36,195 82,158 128,122 174,92 220,62" fill="none" stroke="rgba(196,154,60,0.7)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="10" y1="255" x2="250" y2="255" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+      <div class="pi">
+        <span class="p-tag">Стратегический кейс · FMCG</span>
+        <h3>Стратегия восстановления доли рынка</h3>
+        <p>Адаптированный Mars/P&G кейс. Анализ конкурентной среды и потребительских инсайтов, разработка go-to-market стратегии с KPI и дорожной картой. Финальная презентация с интерактивной визуализацией данных.</p>
+        <div class="p-chips">
+          <span class="chip">Конкурентный анализ</span>
+          <span class="chip">Go-to-market</span>
+          <span class="chip">Визуализация данных</span>
+          <span class="chip">P&G методология</span>
+        </div>
+        <button class="btn-sm" onclick="openModal('modal-mars')">
+          Открыть презентацию
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="project-card reveal">
+      <div class="pv pv-2">
+        <div class="pv-num">02</div>
+        <div class="pv-inner">
+          <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="130" cy="130" r="68" fill="none" stroke="rgba(96,165,250,0.4)" stroke-width="1.5"/>
+            <circle cx="130" cy="130" r="62" fill="rgba(10,14,48,0.65)"/>
+            <circle cx="110" cy="112" r="6" fill="rgba(196,154,60,0.85)"/>
+            <circle cx="145" cy="137" r="4" fill="rgba(196,154,60,0.5)"/>
+            <circle cx="126" cy="155" r="5" fill="rgba(96,165,250,0.75)"/>
+            <line x1="178" y1="178" x2="218" y2="218" stroke="rgba(96,165,250,0.55)" stroke-width="8" stroke-linecap="round"/>
+            <ellipse cx="130" cy="130" rx="28" ry="19" fill="none" stroke="rgba(59,130,246,0.18)" stroke-width="1"/>
+            <ellipse cx="130" cy="130" rx="44" ry="32" fill="none" stroke="rgba(59,130,246,0.12)" stroke-width="1"/>
+            <text x="55" y="72" fill="rgba(196,154,60,0.25)" font-size="22" font-family="sans-serif">?</text>
+            <text x="200" y="80" fill="rgba(96,165,250,0.25)" font-size="17" font-family="sans-serif">?</text>
+            <text x="42" y="215" fill="rgba(96,165,250,0.22)" font-size="18" font-family="sans-serif">?</text>
+          </svg>
+        </div>
+      </div>
+      <div class="pi">
+        <span class="p-tag">Интерактивный · Gamification</span>
+        <h3>«Найди улику» — браузерный детектив</h3>
+        <p>Полноценная браузерная игра с нелинейным сюжетом, механикой поиска улик и системой подсказок. Написана с нуля на HTML/CSS/JS без фреймворков. Демонстрирует понимание вовлекающих UX-паттернов и геймдизайн-мышление.</p>
+        <div class="p-chips">
+          <span class="chip">HTML / CSS / JS</span>
+          <span class="chip">Game Design</span>
+          <span class="chip">UX-паттерны</span>
+          <span class="chip">Нелинейный сценарий</span>
+        </div>
+        <button class="btn-sm" onclick="openModal('modal-detective')">
+          Открыть игру
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="project-card reveal">
+      <div class="pv pv-3">
+        <div class="pv-num">03</div>
+        <div class="pv-inner">
+          <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="115" y="58" width="50" height="88" rx="25" fill="rgba(26,128,80,0.38)" stroke="rgba(42,184,112,0.55)" stroke-width="1.5"/>
+            <line x1="115" y1="87" x2="165" y2="87" stroke="rgba(42,184,112,0.38)" stroke-width="1"/>
+            <line x1="115" y1="97" x2="165" y2="97" stroke="rgba(42,184,112,0.38)" stroke-width="1"/>
+            <line x1="115" y1="107" x2="165" y2="107" stroke="rgba(42,184,112,0.38)" stroke-width="1"/>
+            <path d="M 88 150 Q 88 185 140 185 Q 192 185 192 150" fill="none" stroke="rgba(42,184,112,0.45)" stroke-width="2"/>
+            <line x1="140" y1="185" x2="140" y2="210" stroke="rgba(42,184,112,0.45)" stroke-width="2"/>
+            <line x1="114" y1="210" x2="166" y2="210" stroke="rgba(42,184,112,0.45)" stroke-width="2"/>
+            <path d="M 72 95 Q 57 120 72 145" fill="none" stroke="rgba(42,184,112,0.28)" stroke-width="1.5"/>
+            <path d="M 58 86 Q 40 120 58 154" fill="none" stroke="rgba(42,184,112,0.18)" stroke-width="1.5"/>
+            <path d="M 208 95 Q 223 120 208 145" fill="none" stroke="rgba(42,184,112,0.28)" stroke-width="1.5"/>
+            <path d="M 222 86 Q 240 120 222 154" fill="none" stroke="rgba(42,184,112,0.18)" stroke-width="1.5"/>
+            <circle cx="140" cy="100" r="4" fill="rgba(42,184,112,0.9)">
+              <animate attributeName="opacity" values=".4;1;.4" dur="1.8s" repeatCount="indefinite"/>
+            </circle>
+            <text x="140" y="248" text-anchor="middle" fill="rgba(255,255,255,0.38)" font-size="9" font-family="sans-serif">Python · Vosk · Yandex GPT · TTS</text>
+          </svg>
+        </div>
+      </div>
+      <div class="pi">
+        <span class="p-tag">AI-продукт · Диплом 2025</span>
+        <h3>Голосовой ИИ-ассистент Simple Wine</h3>
+        <p>Дипломный проект: голосовой ассистент «Юлия» для консультации по выбору вина и проверки уровня лояльности. Vosk — распознавание речи, Yandex GPT — генерация ответов, TTS — синтез голоса. Полный цикл: идея, архитектура, код, демо.</p>
+        <div class="p-chips">
+          <span class="chip">Python</span>
+          <span class="chip">Vosk ASR</span>
+          <span class="chip">Yandex GPT</span>
+          <span class="chip">TTS</span>
+          <span class="chip">PyAudio</span>
+        </div>
+        <button class="btn-sm" onclick="openModal('modal-vosk')">
+          Запустить симулятор
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="sec-label reveal" style="justify-content:center;">Контакты</div>
+    <h2 class="sec-title reveal" style="text-align:center; margin-bottom:18px;">Готов к работе в команде</h2>
+    <p class="contact-sub reveal">Открыт к обсуждению задач и возможностей.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:tosha-tkach@mail.ru" class="clink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        tosha-tkach@mail.ru
+      </a>
+      <a href="tel:+79106282012" class="clink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.17-1.17a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        +7 (910) 628-20-12
+      </a>
+      <a href="https://t.me/toshadx" class="clink" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.820 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        @toshadx
+      </a>
+      <a href="CV.pdf" download="CV_Anton_Tkach.pdf" class="clink" id="dlCV2" download="CV_Anton_Tkach.pdf">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 18 15 15"/></svg>
+        Скачать PDF CV
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Антон Ткач</span>
+  <span>Москва · Junior Product Designer</span>
+  <a href="#hero">↑ Наверх</a>
+</footer>
+
+<!-- ===================== MODALS ===================== -->
+
+<div class="modal-overlay" id="modal-mars">
+  <div class="modal-header">
+    <h4>Стратегия восстановления доли рынка — FMCG кейс</h4>
+    <button class="modal-close" onclick="closeModal('modal-mars')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <iframe src="mars_presentation.html" title="Mars FMCG Strategy" loading="lazy"></iframe>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-detective">
+  <div class="modal-header">
+    <h4>«Найди улику» — интерактивный детектив</h4>
+    <button class="modal-close" onclick="closeModal('modal-detective')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <iframe src="game.html" title="Detective Game" loading="lazy"></iframe>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-vosk">
+  <div class="modal-header">
+    <h4>Голосовой ИИ-ассистент Simple Wine — симулятор</h4>
+    <button class="modal-close" onclick="closeModal('modal-vosk')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- Collapsible Split Column Dashboard -->
+    <div class="ai-dashboard-grid" id="aiDashboardGrid">
+
+      <!-- Left Column: Media Player Demonstrator -->
+      <div class="video-column" id="videoColumn">
+        <div class="video-row">
+          <video id="demoVid" src="voice.mp4" preload="metadata" playsinline></video>
+          
+          <!-- Custom HUD Media Bar Control Panel -->
+          <div class="custom-player-bar">
+            <button class="player-btn" id="playBtn" onclick="toggleVid()">&#9654;</button>
+            <div class="progress-bar-container" onclick="seekVideo(event)">
+              <div class="progress-bar-fill" id="videoProgress"></div>
+            </div>
+            <div class="volume-container">
+              <svg class="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <input type="range" class="volume-slider" id="volSlider" min="0" max="1" step="0.05" value="0.35" oninput="changeVolume(this.value)">
+            </div>
+            <div class="speed-selector">
+              <select id="speedSel" onchange="setSpd(this.value)">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1.0×</option>
+                <option value="1.5">1.5×</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="video-guidelines">
+          <h5>Голосовой интерфейс</h5>
+          <ul>
+            <li>Синтезирует речь в реальном времени с помощью Yandex Cloud TTS.</li>
+            <li>Анализирует запросы пользователя посредством модели YandexGPT.</li>
+            <li>Использует библиотеку распознавания Vosk для работы без сети Интернет.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Terminal Console -->
+      <div class="term-block">
+        <div class="term-head">
+          <div class="t-ttl">
+            <span class="t-dot"></span>
+            WINE_ASSISTANT v1.4 &nbsp;·&nbsp; Vosk + YandexGPT + TTS
+          </div>
+          <span style="font-family:monospace;font-size:.72rem;color:#374151;">PORT:16000</span>
+        </div>
+        <div class="term-console" id="tc">
+          <div class="cl sys">[SYS] Загрузка Vosk / vosk-model-small-ru-0.22 ...</div>
+          <div class="cl sys">[SYS] PyAudio инициализирован. Rate: 16000 Hz</div>
+          <div class="cl sys">[SYS] Yandex TTS: voice=jane, emotion=good, speed=1.5</div>
+          <div class="cl bot">Юлия: Здравствуйте! Меня зовут Юлия. Помогу подобрать вино. Как вас зовут?</div>
+        </div>
+        <div class="term-btns">
+          <button class="t-btn" onclick="ts('alexey')">Представиться: Алексей (Золотой)</button>
+          <button class="t-btn" onclick="ts('guest')">Представиться: Гость</button>
+          <button class="t-btn" onclick="ts('red')">Хочу красного сухого</button>
+          <button class="t-btn" onclick="ts('white')">Попробую белое</button>
+          <button class="t-btn" onclick="ts('confirm')">Беру, оформляем</button>
+          <button class="t-btn toggle-video-btn" onclick="toggleVideoShowcase()" id="videoCollapseBtn">Свернуть видео</button>
+          <div class="wave-anim">
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+            <div class="wb"></div><div class="wb"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== JS ===================== -->
+<script>
+/* ---- Nav dynamic scrolling ---- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+
+/* ---- Intersection Observer for Reveal ---- */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.transitionDelay = (i % 4) * 0.08 + 's';
+      e.target.classList.add('vis');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+/* ---- Smooth scroll for anchor links ---- */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id === '#') return;
+    e.preventDefault();
+    const t = document.querySelector(id);
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+/* ---- Modal Window Controllers ---- */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (id === 'modal-vosk') {
+    // Установка громкости по умолчанию на 35% при открытии плеера
+    vid.volume = 0.35;
+    document.getElementById('volSlider').value = 0.35;
+  }
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+  if (id === 'modal-vosk') {
+    vid.pause();
+    playing = false;
+    pb.innerHTML = '&#9654;';
+  }
+}
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => {
+    if (e.target === o) { 
+      o.classList.remove('open'); 
+      document.body.style.overflow = ''; 
+      vid.pause();
+      playing = false;
+      pb.innerHTML = '&#9654;';
+    }
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(o => {
+      o.classList.remove('open');
+      vid.pause();
+      playing = false;
+      pb.innerHTML = '&#9654;';
+    });
+    document.body.style.overflow = '';
+  }
+});
+
+/* ---- Custom Media Player Controls ---- */
+const vid = document.getElementById('demoVid');
+const pb  = document.getElementById('playBtn');
+let playing = false;
+
+function toggleVid() {
+  if (playing) { 
+    vid.pause(); 
+    pb.innerHTML = '&#9654;'; 
+    playing = false; 
+  } else { 
+    vid.play(); 
+    pb.innerHTML = '&#9646;&#9646;'; 
+    playing = true; 
+  }
+}
+
+function setSpd(s) { 
+  vid.playbackRate = parseFloat(s); 
+}
+
+function changeVolume(val) {
+  vid.volume = parseFloat(val);
+}
+
+function seekVideo(e) {
+  const container = e.currentTarget;
+  const rect = container.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const width = rect.width;
+  const pct = clickX / width;
+  vid.currentTime = pct * vid.duration;
+}
+
+vid.addEventListener('timeupdate', () => {
+  if (vid.duration) {
+    const pct = (vid.currentTime / vid.duration) * 100;
+    document.getElementById('videoProgress').style.width = pct + '%';
+  }
+});
+
+vid.addEventListener('ended', () => { 
+  playing = false; 
+  pb.innerHTML = '&#9654;'; 
+});
+
+/* ---- Collapsible Media Showcase Panel Toggle ---- */
+let isVideoCollapsed = false;
+const aiDashboardGrid = document.getElementById('aiDashboardGrid');
+const videoCollapseBtn = document.getElementById('videoCollapseBtn');
+
+function toggleVideoShowcase() {
+  isVideoCollapsed = !isVideoCollapsed;
+  if (isVideoCollapsed) {
+    aiDashboardGrid.classList.add('video-collapsed');
+    videoCollapseBtn.textContent = 'Развернуть видео';
+  } else {
+    aiDashboardGrid.classList.remove('video-collapsed');
+    videoCollapseBtn.textContent = 'Свернуть видео';
+  }
+}
+
+/* ---- Terminal simulator logic ---- */
+const tc = document.getElementById('tc');
+function tlog(text, cls) {
+  const d = document.createElement('div');
+  d.className = 'cl ' + cls;
+  d.textContent = text;
+  tc.appendChild(d);
+  tc.scrollTop = tc.scrollHeight;
+}
+function ts(action) {
+  const map = {
+    alexey: [
+      ['🗣 Вы (Vosk ASR): Меня зовут Алексей.', 'usr'],
+      ['[DB] Клиент найден → Золотой уровень, скидка 20%', 'sys'],
+      ['Юлия: Рады снова видеть вас, Алексей! Золотой уровень — ваша скидка 20%. Что сегодня: красное или белое?', 'bot']
+    ],
+    guest: [
+      ['🗣 Вы (Vosk ASR): Меня зовут Дмитрий.', 'usr'],
+      ['[DB] Запрос по клиенту "дмитрий" → Запись не найдена', 'sys'],
+      ['Юлия: Дмитрий, рада познакомиться! Вы не в базе постоянных гостей, но подберём отличное вино. Что предпочитаете — красное или белое?', 'bot']
+    ],
+    red: [
+      ['🗣 Вы (Vosk ASR): Хочу красного сухого.', 'usr'],
+      ['[YandexGPT] Генерирую персональное предложение...', 'sys'],
+      ['Юлия: Рекомендую Dogliani 2022, Пьемонт. Виноград Дольчетто — бархатистый вкус, нотки сливы и миндаля. 2 874 ₽. Рассказать подробнее?', 'bot']
+    ],
+    white: [
+      ['🗣 Вы (Vosk ASR): Попробую что-нибудь белое.', 'usr'],
+      ['[YandexGPT] Подбираю из матрицы белых вин...', 'sys'],
+      ['Юлия: Chardonnay 2022, Бургундия — маслянистая текстура, ваниль и цитрус, отлично к рыбе. 2 994 ₽.', 'bot']
+    ],
+    confirm: [
+      ['🗣 Вы (Vosk ASR): Берём, оформляем.', 'usr'],
+      ['[WhatsApp API] Отправка купона на привязанный номер...', 'warn'],
+      ['Юлия: Отлично! Детали и купон уже в WhatsApp. Приятного вечера!', 'bot']
+    ]
+  };
+  const steps = map[action];
+  if (!steps) return;
+  tlog(steps[0][0], steps[0][1]);
+  if (steps[1]) setTimeout(() => tlog(steps[1][0], steps[1][1]), 650);
+  if (steps[2]) setTimeout(() => tlog(steps[2][0], steps[2][1]), 1300);
+}
+</script>
+</body>
+</html>
